@@ -1,6 +1,26 @@
 import React, { Component } from 'react';
 import Form from './components/Form';
 import TodoList from './components/TodoList';
+import Title from './components/Title';
+import styled, { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    box-sizing: border-box;
+    font-family: 'Arial, sans-serif';
+
+    margin: 0;
+    padding: 0;
+  }
+`;
+
+const Wrapper = styled.main`
+  border-radius: 5px;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  margin: 50px auto 0;
+  padding: 20px;
+  width: 500px;
+`;
 
 class App extends Component {
   constructor(props) {
@@ -13,20 +33,32 @@ class App extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    const todo = e.target.todo;
+
+    if (!todo.value) {
+      return;
+    }
+
     const newTodo = {
       id: this.state.todos.length + 1,
-      text: e.target.todo.value,
+      text: todo.value,
       completed: false,
     };
 
-    this.setState(prevState => ({
-      todos: [...prevState.todos, newTodo],
-    }));
+    this.setState(
+      ({ todos }) => ({
+        todos: [...todos, newTodo],
+      }),
+      () => {
+        todo.value = '';
+        todo.focus();
+      }
+    );
   };
 
-  handleTodo = id => e =>
-    this.setState(prevState => ({
-      todos: prevState.todos.map(todo => {
+  handleTodo = id => () =>
+    this.setState(({ todos }) => ({
+      todos: todos.map(todo => {
         if (todo.id !== id) {
           return todo;
         }
@@ -40,10 +72,12 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <Form handleSubmit={this.handleSubmit} />
+      <Wrapper>
+        <GlobalStyle />
+        <Title>Styled Todo</Title>
         <TodoList todos={this.state.todos} handleTodo={this.handleTodo} />
-      </div>
+        <Form handleSubmit={this.handleSubmit} />
+      </Wrapper>
     );
   }
 }
