@@ -7,6 +7,9 @@ const List = styled.ul`
 `;
 
 const Label = styled.label`
+  align-items: center;
+  cursor: pointer;
+  display: flex;
   position: relative;
 
   &:before {
@@ -30,7 +33,7 @@ const Label = styled.label`
         height: 5px;
         left: 3px;
         position: absolute;
-        top: 4px;
+        top: 7px;
         transform: rotate(-45deg);
         width: 10px;
       }
@@ -58,7 +61,7 @@ const Task = styled.li`
         `}
 
   & ~ & {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #abb7b7;
   }
 `;
 
